@@ -7,7 +7,6 @@ interface ABI {
 
 export async function getConfig(path: string) {
   const jsonString = await fs.promises.readFile(path, "utf-8");
-
   return JSON.parse(jsonString);
 }
 
@@ -17,14 +16,16 @@ export async function getAbi(path: string) {
   return json.abi as ABI[];
 }
 
-export async function buildStruct(contractName: string, abiPath: string) {
-  const abi = await getAbi(abiPath);
-  const inputs = abi[0].inputs;
+async function getConstructor(path: string) {
+  const abi = await getAbi(path);
+  return abi[0].inputs;
+}
 
+async function buildStruct(contractName: string, constructorABI: Input[]) {
   let fields: string = "";
 
-  inputs.forEach((input: Input) => {
-    fields += `${input.type} ${input.name}; \n`;
+  constructorABI.forEach((arg: Input) => {
+    fields += `${arg.type} ${arg.name}; \n`;
   });
 
   let configStruct: string = `
@@ -36,36 +37,30 @@ export async function buildStruct(contractName: string, abiPath: string) {
   return configStruct;
 }
 
-export async function buildDeployer(
+async function buildDeployer(
   contractName: string,
-  abiPath: string,
-  configPath: string
+  constructorABI: Input[],
+  config: object
 ) {
-  const abi = await getAbi(abiPath);
-  const inputs = abi[0].inputs;
-
-  const config = await getConfig(configPath);
-  const tokenConfig = config[contractName as keyof typeof config];
-
   let dynamicArgsList: Input[] = [];
   let staticArgsList: { type: string; name: string; value: unknown }[] = [];
 
-  inputs.forEach((input: Input) => {
-    if (input.name in tokenConfig) {
+  constructorABI.forEach((arg: Input) => {
+    if (arg.name in config) {
       staticArgsList.push({
-        type: input.type,
-        name: input.name,
-        value: tokenConfig[input.name as keyof typeof tokenConfig],
+        type: arg.type,
+        name: arg.name,
+        value: config[arg.name as keyof typeof config],
       });
     } else {
-      dynamicArgsList.push(input);
+      dynamicArgsList.push(arg);
     }
   });
 
-  let dynamicArgs = dynamicArgsList
+  const dynamicArgs = dynamicArgsList
     .map((input) => `${input.type} ${input.name}`)
     .join(", ");
-  let staticArgs = staticArgsList
+  const staticArgs = staticArgsList
     .map((arg) => `${arg.type} ${arg.name} = ${arg.value};\n`)
     .join("");
 
@@ -88,8 +83,17 @@ export async function build(
   abiPath: string,
   configPath: string
 ) {
-  const structString = await buildStruct(contractName, abiPath);
-  const deployerString = await buildDeployer(contractName, abiPath, configPath);
+  const constructorABI = await getConstructor(abiPath);
+
+  const config = await getConfig(configPath);
+  const tokenConfig = config[contractName as keyof typeof config];
+
+  const structString = await buildStruct(contractName, constructorABI);
+  const deployerString = await buildDeployer(
+    contractName,
+    constructorABI,
+    tokenConfig
+  );
 
   return `
     ${structString}
