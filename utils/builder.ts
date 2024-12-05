@@ -1,4 +1,3 @@
-import { console } from "inspector";
 import type { Input } from "./type";
 import fs from "fs";
 
@@ -18,10 +17,8 @@ export async function getAbi(path: string) {
   return json.abi as ABI[];
 }
 
-export async function buildStruct(contracName: string, abiPath: string) {
-  console.log("hello");
+export async function buildStruct(contractName: string, abiPath: string) {
   const abi = await getAbi(abiPath);
-  console.log(abi);
   const inputs = abi[0].inputs;
 
   let fields: string = "";
@@ -31,7 +28,7 @@ export async function buildStruct(contracName: string, abiPath: string) {
   });
 
   let configStruct: string = `
-  struct ${contracName}Config {
+  struct ${contractName}Config {
     ${fields}
   }
 `;
@@ -42,7 +39,7 @@ export async function buildStruct(contracName: string, abiPath: string) {
 export async function buildDeployer(
   contractName: string,
   abiPath: string,
-  configPath: string,
+  configPath: string
 ) {
   const abi = await getAbi(abiPath);
   const inputs = abi[0].inputs;
@@ -89,7 +86,7 @@ export async function buildDeployer(
 export async function build(
   contractName: string,
   abiPath: string,
-  configPath: string,
+  configPath: string
 ) {
   const structString = await buildStruct(contractName, abiPath);
   const deployerString = await buildDeployer(contractName, abiPath, configPath);
