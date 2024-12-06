@@ -10,7 +10,7 @@ export async function getConfig(path: string) {
   return JSON.parse(jsonString);
 }
 
-export async function getAbi(path: string) {
+async function getAbi(path: string) {
   const jsonString = await fs.promises.readFile(path, "utf-8");
   const json = JSON.parse(jsonString);
   return json.abi as ABI[];
@@ -30,9 +30,9 @@ async function buildStruct(contractName: string, constructorABI: Input[]) {
 
   let configStruct: string = `
   struct ${contractName}Config {
-    ${fields}
+      ${fields}
   }
-`;
+  `;
 
   return configStruct;
 }
@@ -64,6 +64,7 @@ async function buildDeployer(
   const dynamicArgs = dynamicArgsList
     .map((input) => `${input.type} ${input.name}`)
     .join(", ");
+
   const staticArgTypes = staticArgsList.map((arg) => `${arg.type}`).join(", ");
   const staticArgs = staticArgsList
     .map((arg) => `${arg.type} ${arg.name}`)

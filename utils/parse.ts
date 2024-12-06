@@ -8,29 +8,33 @@ const exec = util.promisify(child_process.exec);
 
 async function getConfigPath(path: string) {
   const configs = await exec("ls " + path);
-  const config = configs.stdout.split("\n")[0];
+  const config = configs.stdout.split("\n")[0]; // Get first config file name in script folder
   return path + "/" + config;
 }
 
-async function buildStructAndFunctions(basePath: string, scriptFile: string) {
+async function buildStructsAndFunctions(root: string, configPath: string) {
   let structAndFunctions = "";
-  const configPath = await getConfigPath(
-    `${basePath}/script/${scriptFile}/config`
-  );
 
+  // Get all contracts in config file
   const config = await getConfig(configPath);
   for (const [key] of Object.entries(config)) {
     const contractName = key;
-    const abiPath = `${basePath}/out/${contractName}.sol/${contractName}.json`;
+    const abiPath = `${root}/out/${contractName}.sol/${contractName}.json`;
     structAndFunctions += await build(contractName, abiPath, configPath);
   }
 
   return structAndFunctions;
 }
 
-export async function generateDeployer(basePath: string, scriptFile: string) {
-  const path = `${basePath}/script/${scriptFile}/Deployer.sol`;
-  let structAndFunctions = await buildStructAndFunctions(basePath, scriptFile);
+async function buildDeployer(root: string, scriptFile: string) {
+  const configPath = await getConfigPath(`${root}/script/${scriptFile}/config`);
+
+  return await buildStructsAndFunctions(root, configPath);
+}
+
+export async function buildLibrary(root: string, scriptFile: string) {
+  const path = `${root}/script/${scriptFile}/Deployer.sol`;
+  let structAndFunctions = await buildDeployer(root, scriptFile);
 
   let contract: string = `
     pragma solidity ^0.8.0;
