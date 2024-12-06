@@ -6,7 +6,7 @@ export async function buildStructAndFunctions(
   scriptFile: string
 ) {
   let structAndFunctions = "";
-  const configPath = `${basePath}/script/${scriptFile}/config/31337.json`;
+  const configPath = `${basePath}/script/${scriptFile}/config/31337.json`; // TODO solve chain id problem
 
   const config = await getConfig(configPath);
   for (const [key] of Object.entries(config)) {
@@ -19,7 +19,7 @@ export async function buildStructAndFunctions(
 }
 
 export async function generateDeployer(basePath: string, scriptFile: string) {
-  const path = `${basePath}/script/token/Deployer.sol`;
+  const path = `${basePath}/script/${scriptFile}/Deployer.sol`;
   let structAndFunctions = await buildStructAndFunctions(basePath, scriptFile);
 
   let contract: string = `
@@ -29,8 +29,12 @@ export async function generateDeployer(basePath: string, scriptFile: string) {
     import {Vm} from "forge-std/Vm.sol";
 
     library Deployer {
-        Vm internal constant vm =
-            Vm(address(uint160(uint256(keccak256("hevm cheat code")))));
+
+        using Config for *;
+
+        Vm internal constant vm = Config.vm;
+
+        string constant ROOT = "${scriptFile}";
 
         ${structAndFunctions}
     }

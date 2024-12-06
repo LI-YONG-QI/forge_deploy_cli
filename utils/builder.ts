@@ -64,17 +64,21 @@ async function buildDeployer(
   const dynamicArgs = dynamicArgsList
     .map((input) => `${input.type} ${input.name}`)
     .join(", ");
+  const staticArgTypes = staticArgsList.map((arg) => `${arg.type}`).join(", ");
   const staticArgs = staticArgsList
-    .map((arg) => `${arg.type} ${arg.name} = ${arg.value};\n`)
-    .join("");
+    .map((arg) => `${arg.type} ${arg.name}`)
+    .join(", ");
+
   const constructorEncode = constructorEncodeList.join(", ");
 
   let base = `function deploy${contractName}(${dynamicArgs}) internal returns (address) {
-    ${staticArgs}
+    bytes memory configJson = ROOT.loadConfig(block.chainid, "${contractName}");
+
+    (${staticArgs}) = abi.decode(configJson, (${staticArgTypes}));
 
     bytes memory args = abi.encode(${constructorEncode});
-
     bytes memory bytecode = vm.getCode("${contractName}");
+
     return Config._deploy(abi.encodePacked(bytecode, args));
   }
   `;
