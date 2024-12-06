@@ -3,11 +3,8 @@ import { build, getConfig } from "./builder";
 
 export async function buildStructAndFunctions(
   basePath: string,
-  scriptFile: string,
+  scriptFile: string
 ) {
-  // `${basePath}/out/Token.sol/Token2.json`,
-  // `${basePath}/script/token/config/31337.json`,
-
   let structAndFunctions = "";
   const configPath = `${basePath}/script/${scriptFile}/config/31337.json`;
 

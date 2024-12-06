@@ -37,6 +37,7 @@ async function buildStruct(contractName: string, constructorABI: Input[]) {
   return configStruct;
 }
 
+///@notice  This function builds the deployer function for the contract
 async function buildDeployer(
   contractName: string,
   constructorABI: Input[],
@@ -44,8 +45,11 @@ async function buildDeployer(
 ) {
   let dynamicArgsList: Input[] = [];
   let staticArgsList: { type: string; name: string; value: unknown }[] = [];
+  let constructorEncodeList: string[] = [];
 
   constructorABI.forEach((arg: Input) => {
+    constructorEncodeList.push(arg.name);
+
     if (arg.name in config) {
       staticArgsList.push({
         type: arg.type,
@@ -63,12 +67,12 @@ async function buildDeployer(
   const staticArgs = staticArgsList
     .map((arg) => `${arg.type} ${arg.name} = ${arg.value};\n`)
     .join("");
+  const constructorEncode = constructorEncodeList.join(", ");
 
   let base = `function deploy${contractName}(${dynamicArgs}) internal returns (address) {
     ${staticArgs}
 
-    ${contractName}Config memory config = ${contractName}Config({_x: _x, _y: _y, _token: _token});
-    bytes memory args = abi.encode(config);
+    bytes memory args = abi.encode(${constructorEncode});
 
     bytes memory bytecode = vm.getCode("${contractName}");
     return Config._deploy(abi.encodePacked(bytecode, args));
@@ -87,6 +91,7 @@ export async function build(
 
   const config = await getConfig(configPath);
   const tokenConfig = config[contractName as keyof typeof config];
+  console.log(tokenConfig);
 
   const structString = await buildStruct(contractName, constructorABI);
   const deployerString = await buildDeployer(
