@@ -1,12 +1,22 @@
 import { promises } from "fs";
 import { build, getConfig } from "./builder";
 
-export async function buildStructAndFunctions(
-  basePath: string,
-  scriptFile: string
-) {
+import util from "util";
+import child_process from "child_process";
+
+const exec = util.promisify(child_process.exec);
+
+async function getConfigPath(path: string) {
+  const configs = await exec("ls " + path);
+  const config = configs.stdout.split("\n")[0];
+  return path + "/" + config;
+}
+
+async function buildStructAndFunctions(basePath: string, scriptFile: string) {
   let structAndFunctions = "";
-  const configPath = `${basePath}/script/${scriptFile}/config/31337.json`; // TODO solve chain id problem
+  const configPath = await getConfigPath(
+    `${basePath}/script/${scriptFile}/config`
+  );
 
   const config = await getConfig(configPath);
   for (const [key] of Object.entries(config)) {
