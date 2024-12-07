@@ -5,6 +5,11 @@ interface ABI {
   inputs: Input[];
 }
 
+type Static = {
+  type: string;
+  name: string;
+};
+
 export async function getConfig(path: string) {
   const jsonString = await fs.promises.readFile(path, "utf-8");
   return JSON.parse(jsonString);
@@ -37,6 +42,14 @@ async function buildStruct(contractName: string, constructorABI: Input[]) {
   return configStruct;
 }
 
+function sortObjectListByName(list: Static[]): Static[] {
+  return list.sort((a, b) => {
+    if (a.name < b.name) return -1;
+    if (a.name > b.name) return 1;
+    return 0;
+  });
+}
+
 ///@notice  This function builds the deployer function for the contract
 async function buildDeployer(
   contractName: string,
@@ -44,7 +57,7 @@ async function buildDeployer(
   config: object
 ) {
   let dynamicArgsList: Input[] = [];
-  let staticArgsList: { type: string; name: string; value: unknown }[] = [];
+  let staticArgsList: Static[] = [];
   let constructorEncodeList: string[] = [];
 
   constructorABI.forEach((arg: Input) => {
@@ -54,12 +67,13 @@ async function buildDeployer(
       staticArgsList.push({
         type: arg.type,
         name: arg.name,
-        value: config[arg.name as keyof typeof config],
       });
     } else {
       dynamicArgsList.push(arg);
     }
   });
+
+  sortObjectListByName(staticArgsList);
 
   const dynamicArgs = dynamicArgsList
     .map((input) => `${input.type} ${input.name}`)
@@ -80,7 +94,7 @@ async function buildDeployer(
     bytes memory args = abi.encode(${constructorEncode});
     bytes memory bytecode = vm.getCode("${contractName}");
 
-    return Config._deploy(abi.encodePacked(bytecode, args));
+    return Config.deploy(abi.encodePacked(bytecode, args));
   }
   `;
 

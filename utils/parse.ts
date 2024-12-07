@@ -39,7 +39,7 @@ export async function buildLibrary(root: string, scriptFile: string) {
   let contract: string = `
     pragma solidity ^0.8.0;
 
-    import {Config} from "../../../src/Config.sol";
+    import {Config} from "forge_deploy/Config.sol";
     import {Vm} from "forge-std/Vm.sol";
 
     library Deployer {
