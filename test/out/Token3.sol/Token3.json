@@ -1,0 +1,108 @@
+{
+  "abi": [
+    {
+      "type": "constructor",
+      "inputs": [
+        { "name": "_a", "type": "bool", "internalType": "bool" },
+        { "name": "_b", "type": "uint256", "internalType": "uint256" }
+      ],
+      "stateMutability": "nonpayable"
+    },
+    {
+      "type": "function",
+      "name": "a",
+      "inputs": [],
+      "outputs": [{ "name": "", "type": "bool", "internalType": "bool" }],
+      "stateMutability": "view"
+    },
+    {
+      "type": "function",
+      "name": "b",
+      "inputs": [],
+      "outputs": [{ "name": "", "type": "uint256", "internalType": "uint256" }],
+      "stateMutability": "view"
+    }
+  ],
+  "bytecode": {
+    "object": "0x6080604052348015600f57600080fd5b50604051610127380380610127833981016040819052602c916045565b6000805460ff1916921515929092179091556001556076565b60008060408385031215605757600080fd5b82518015158114606657600080fd5b6020939093015192949293505050565b60a3806100846000396000f3fe6080604052348015600f57600080fd5b506004361060325760003560e01c80630dbe671f1460375780634df7e3d0146058575b600080fd5b60005460439060ff1681565b60405190151581526020015b60405180910390f35b606060015481565b604051908152602001604f56fea264697066735822122067ab7774afec7050b58f6b769196bcde01f3477d1f72a7ee349120687971495464736f6c634300081a0033",
+    "sourceMap": "62:138:1:-:0;;;126:72;;;;;;;;;;;;;;;;;;;;;;;;;;;;:::i;:::-;169:1;:6;;-1:-1:-1;;169:6:1;;;;;;;;;;;-1:-1:-1;185:6:1;62:138;;14:338:2;90:6;98;151:2;139:9;130:7;126:23;122:32;119:52;;;167:1;164;157:12;119:52;199:9;193:16;252:5;245:13;238:21;231:5;228:32;218:60;;274:1;271;264:12;218:60;342:2;327:18;;;;321:25;297:5;;321:25;;-1:-1:-1;;;14:338:2:o;:::-;62:138:1;;;;;;",
+    "linkReferences": {}
+  },
+  "deployedBytecode": {
+    "object": "0x6080604052348015600f57600080fd5b506004361060325760003560e01c80630dbe671f1460375780634df7e3d0146058575b600080fd5b60005460439060ff1681565b60405190151581526020015b60405180910390f35b606060015481565b604051908152602001604f56fea264697066735822122067ab7774afec7050b58f6b769196bcde01f3477d1f72a7ee349120687971495464736f6c634300081a0033",
+    "sourceMap": "62:138:1:-:0;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;84:13;;;;;;;;;;;;179:14:2;;172:22;154:41;;142:2;127:18;84:13:1;;;;;;;;103:16;;;;;;;;;352:25:2;;;340:2;325:18;103:16:1;206:177:2",
+    "linkReferences": {}
+  },
+  "methodIdentifiers": { "a()": "0dbe671f", "b()": "4df7e3d0" },
+  "rawMetadata": "{\"compiler\":{\"version\":\"0.8.26+commit.8a97fa7a\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[{\"internalType\":\"bool\",\"name\":\"_a\",\"type\":\"bool\"},{\"internalType\":\"uint256\",\"name\":\"_b\",\"type\":\"uint256\"}],\"stateMutability\":\"nonpayable\",\"type\":\"constructor\"},{\"inputs\":[],\"name\":\"a\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"b\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"}],\"devdoc\":{\"kind\":\"dev\",\"methods\":{},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"src/test/Token3.sol\":\"Token3\"},\"evmVersion\":\"paris\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":true,\"runs\":200},\"remappings\":[\":@openzeppelin/contracts/=lib/openzeppelin-contracts/contracts/\",\":ds-test/=lib/openzeppelin-contracts/lib/forge-std/lib/ds-test/src/\",\":erc4626-tests/=lib/openzeppelin-contracts/lib/erc4626-tests/\",\":forge-std/=lib/forge-std/src/\",\":halmos-cheatcodes/=lib/openzeppelin-contracts/lib/halmos-cheatcodes/src/\",\":openzeppelin-contracts/=lib/openzeppelin-contracts/\",\":solidity-stringutils/=lib/solidity-stringutils/\"]},\"sources\":{\"src/test/Token.sol\":{\"keccak256\":\"0x10f160ba78b3ede346fa1db319e1163be84780a09039bc7efd30d39f7be26e84\",\"license\":\"SEE LICENSE IN LICENSE\",\"urls\":[\"bzz-raw://31add6bd063602293f75dc4ae5141fa96eaa699e452a5ec7098f463f85e9b852\",\"dweb:/ipfs/QmVYGAnkKqYNyofGDjGDRJQz69eVxkrTyEnqC5m47K6vwL\"]},\"src/test/Token3.sol\":{\"keccak256\":\"0x952d6c50fdf6df27c098d3f7d49e4a2ac75634404bda7f8b4b323b7bed6c807b\",\"urls\":[\"bzz-raw://f3e80f2a6e5751c3e1a121845d11e5f0fb576a76bae63258da18691eb2a37708\",\"dweb:/ipfs/QmdPdktvUN5byzi5aCV2EEg2JuD3w27sg8qMjbMT8YxdLE\"]}},\"version\":1}",
+  "metadata": {
+    "compiler": { "version": "0.8.26+commit.8a97fa7a" },
+    "language": "Solidity",
+    "output": {
+      "abi": [
+        {
+          "inputs": [
+            { "internalType": "bool", "name": "_a", "type": "bool" },
+            { "internalType": "uint256", "name": "_b", "type": "uint256" }
+          ],
+          "stateMutability": "nonpayable",
+          "type": "constructor"
+        },
+        {
+          "inputs": [],
+          "stateMutability": "view",
+          "type": "function",
+          "name": "a",
+          "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }]
+        },
+        {
+          "inputs": [],
+          "stateMutability": "view",
+          "type": "function",
+          "name": "b",
+          "outputs": [
+            { "internalType": "uint256", "name": "", "type": "uint256" }
+          ]
+        }
+      ],
+      "devdoc": { "kind": "dev", "methods": {}, "version": 1 },
+      "userdoc": { "kind": "user", "methods": {}, "version": 1 }
+    },
+    "settings": {
+      "remappings": [
+        "@openzeppelin/contracts/=lib/openzeppelin-contracts/contracts/",
+        "ds-test/=lib/openzeppelin-contracts/lib/forge-std/lib/ds-test/src/",
+        "erc4626-tests/=lib/openzeppelin-contracts/lib/erc4626-tests/",
+        "forge-std/=lib/forge-std/src/",
+        "halmos-cheatcodes/=lib/openzeppelin-contracts/lib/halmos-cheatcodes/src/",
+        "openzeppelin-contracts/=lib/openzeppelin-contracts/",
+        "solidity-stringutils/=lib/solidity-stringutils/"
+      ],
+      "optimizer": { "enabled": true, "runs": 200 },
+      "metadata": { "bytecodeHash": "ipfs" },
+      "compilationTarget": { "src/test/Token3.sol": "Token3" },
+      "evmVersion": "paris",
+      "libraries": {}
+    },
+    "sources": {
+      "src/test/Token.sol": {
+        "keccak256": "0x10f160ba78b3ede346fa1db319e1163be84780a09039bc7efd30d39f7be26e84",
+        "urls": [
+          "bzz-raw://31add6bd063602293f75dc4ae5141fa96eaa699e452a5ec7098f463f85e9b852",
+          "dweb:/ipfs/QmVYGAnkKqYNyofGDjGDRJQz69eVxkrTyEnqC5m47K6vwL"
+        ],
+        "license": "SEE LICENSE IN LICENSE"
+      },
+      "src/test/Token3.sol": {
+        "keccak256": "0x952d6c50fdf6df27c098d3f7d49e4a2ac75634404bda7f8b4b323b7bed6c807b",
+        "urls": [
+          "bzz-raw://f3e80f2a6e5751c3e1a121845d11e5f0fb576a76bae63258da18691eb2a37708",
+          "dweb:/ipfs/QmdPdktvUN5byzi5aCV2EEg2JuD3w27sg8qMjbMT8YxdLE"
+        ],
+        "license": null
+      }
+    },
+    "version": 1
+  },
+  "id": 1
+}
