@@ -1,23 +1,37 @@
 {
-  "name": "forge_deploy_cli",
-  "version": "1.0.0",
+  "name": "@fuse-kit/fuse",
+  "version": "0.1.0",
+  "author": "LI-YONG-QI",
+  "license": "MIT",
+  "description": "Foundry tool for deploying smart contracts",
   "main": "index.js",
   "bin": {
-    "forge_deploy_cli": "./dist/index.js"
+    "fuse": "dist/index.js"
   },
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "ts-node ./index"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "description": "",
-  "dependencies": {
+  "keywords": [
+    "forge",
+    "Solidity",
+    "Ethereum",
+    "Foundry",
+    "Web3",
+    "Smart Contract"
+  ],
+  "devDependencies": {
+    "bumpp": "^9.8.1",
     "ts-node": "^10.9.2",
     "typescript": "^5.7.2"
   },
-  "devDependencies": {
+  "dependencies": {
     "@types/node": "^22.10.1"
+  },
+  "directories": {
+    "test": "test"
   }
 }
