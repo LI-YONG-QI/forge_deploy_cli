@@ -14,7 +14,7 @@ Install Fuse globally via npm:
 npm i -g @fuse-kit/fuse
 ```
 
-Install fuse library contract in Foundry project
+Install [fuse library contract](https://github.com/LI-YONG-QI/fuse-contracts) in Foundry project
 
 ```base
 forge install LI-YONG-QI/fuse-contracts
