@@ -7,5 +7,11 @@
   "Token3": {
     "_a": true,
     "_b": 200
+  },
+
+  "Router": {
+    "_USDT": "0x07de306FF27a2B630B1141956844eB1552B956B5",
+    "_uniswapV3Pool": "0x1b02dA8Cb0d097eB8D57A175b88c7D8b47997506",
+    "_aaveV3Pool": "0x1F98431c8aD98523631AE4a59f267346ea31F984"
   }
 }
