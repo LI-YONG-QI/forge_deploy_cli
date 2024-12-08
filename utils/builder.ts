@@ -1,14 +1,5 @@
-import type { Input } from "./type";
+import type { Input, Static, ABI } from "./type";
 import fs from "fs";
-
-interface ABI {
-  inputs: Input[];
-}
-
-type Static = {
-  type: string;
-  name: string;
-};
 
 export async function getConfig(path: string) {
   const jsonString = await fs.promises.readFile(path, "utf-8");
@@ -74,6 +65,8 @@ async function buildDeployer(
   });
 
   sortObjectListByName(staticArgsList);
+  //console.log("Sorted");
+  //console.log(staticArgsList);
 
   const dynamicArgs = dynamicArgsList
     .map((input) => `${input.type} ${input.name}`)
