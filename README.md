@@ -63,8 +63,9 @@ The JSON file is primarily used to configure constructor parameters. Developers 
 
 Format in JSON:
 
+In <chianId>.json
+
 ```json
-// in <chianId>.json
 {
   "Contract1": {
     "arg1": 1,
@@ -77,11 +78,80 @@ Format in JSON:
 }
 ```
 
-In JSON, the name of argument (e.g. arg1 / arg2) must same as constructor
+To parse correctly, name of argument (e.g. arg1 / arg2) in JSON **must same as** constructor
 
-### Use case
+## Static arguments
 
-For example, if `Core.s.sol` (script contracts) needs to deploy ` Token.sol`, the JSON configuration would be as follows:
+`Token.sol`
+
+```solidity
+// SPDX-License-Identifier: SEE LICENSE IN LICENSE
+pragma solidity ^0.8.13;
+
+import {ERC20} from "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
+
+contract Token is ERC20, Ownable {
+    uint256 public x;
+    uint256 public y;
+
+    constructor(uint256 _x, uint256 _y, address owner) ERC20("", "") Ownable(owner) {
+        x = _x;
+        y = _y;
+    }
+}
+
+```
+
+In Fuse, arguments that can be hardcoded are referred to as **static arguments**. In other words, these parameters can be directly configured in the JSON file.
+
+```json
+{
+  "Token": {
+    "_x": 1,
+    "_y": 2,
+    "owner": "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266"
+  }
+}
+```
+
+`_x` `_y` `owner` are static arguments
+
+## Dynamic arguments
+
+In some cases, developers cannot know certain arguments in advance. For example, the current time of deployment or the address of a contract deployed earlier in the same deployment script. These arguments are referred to as **dynamic arguments**. Unlike static arguments, dynamic arguments cannot be hardcoded in the JSON file in advance.
+
+Therefore, during the generation of the `Deployer.sol`, it will automatically check which arguments are missing from the JSON (i.e. dynamic arguments) and generate them as arguments for the deploy function.
+
+```json
+{
+  "Token": {
+    "_x": 1,
+    "_y": 2
+  }
+}
+```
+
+`Deployer.sol`
+
+```solidity
+function deployToken(address owner) internal returns (address) {
+    bytes memory configJson = ROOT.loadConfig(block.chainid, "Token");
+
+    (uint256 _x, uint256 _y) = abi.decode(configJson, (uint256, uint256));
+
+    bytes memory args = abi.encode(_x, _y, owner);
+    bytes memory bytecode = vm.getCode("Token");
+
+    return Config.deploy(abi.encodePacked(bytecode, args));
+}
+```
+
+`owner` is dynamic argument
+
+## Use case
+
+For example, if `Core.s.sol` (script contract) needs to deploy `Token.sol`, the JSON configuration would be as follows:
 
 - `Token.sol`
 
@@ -109,12 +179,14 @@ contract Token is ERC20, Ownable {
 ```json
 {
   "Token": {
-    "_x": 1, // name must same as constructor, not x
+    "_x": 1,
     "_y": 2,
     "owner": "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266"
   }
 }
 ```
+
+Note: Name of arguments must same as constructor, (i.e. not x)
 
 - `Deployer.sol` (generated)
 
@@ -151,7 +223,7 @@ library Deployer {
 
 ```
 
-Use `Deployer.sol` in `Core.s.sol`:
+Import `Deployer.sol` library in `Core.s.sol`:
 
 ```solidity
 // SPDX-License-Identifier: SEE LICENSE IN LICENSE
@@ -199,7 +271,7 @@ mkdir fuse-demo && cd fuse-demo && forge init
 1. Configure read/write permissions in `foundry.toml`
 
 ```toml
-// add this line on `[profile.default]` field
+# add this line on `[profile.default]` field
 fs_permissions = [{ access = "read-write", path = "./"}]
 ```
 
@@ -298,4 +370,10 @@ contract CounterScript is Script {
 
 ```base
 forge script CounterScript
+```
+
+output:
+
+```bash
+Counter deployed at: 0x5615dEB798BB3E4dFa0139dFa1b3D433Cc23b72f
 ```
