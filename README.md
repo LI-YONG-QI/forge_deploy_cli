@@ -1,3 +1,7 @@
+<p align="center">
+<img src="https://i.imgur.com/QZeRpCx.png" alt="Logo" width="100" height="100">
+</p>
+
 # Fuse
 
 Fuse is a deployment tool specifically designed for Foundry. Developers can use Fuse to create deployment scripts that are easy to maintain and highly readable, allowing them to focus more on contract interactions rather than managing constructor parameters. It is suitable for scenarios where multiple contracts need to be deployed across multiple chains.
